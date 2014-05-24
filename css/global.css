@@ -1,0 +1,87 @@
+/*
+* Global CSS by Kenneth Brenes
+*
+*/
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+  background-color: #ccc;
+}
+
+.home{
+   position:absolute; 
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+#wrap > .container {
+  padding: 60px 15px 0;
+}
+.container .credit {
+  margin: 20px 0;
+}
+
+#footer > .container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+
+.table-color{
+  background-color:#ffc;
+  border: 1px solid red;
+}
+
+ .show-grid, .show-grid2 {
+      margin-top: 10px;
+      margin-bottom: 0px;
+    }
+    .show-grid  {
+      background-color:#E6E2EB;
+      border: 1px solid #ccc;
+      text-align: left;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      min-height: 40px;
+      line-height: 40px;
+    }
+
+    .show-grid2  {
+      background-color:#DFF0D8;
+      border: 1px solid #ccc;
+      text-align: left;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      min-height: 40px;
+      line-height: 40px;
+    }

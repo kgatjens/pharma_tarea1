@@ -1,0 +1,45 @@
+
+
+https://github.com/kgatjens/pharma_tarea1.git
+
+
+secuencia ejemplo:
+
+Amitriptilina
+good:
+ACTGCTTCAGTTCCAACAACGACGCCCCATAAATTACATGAGTACCTTAGT
+
+Wrong
+ACTGCTTCAGTTCCAACAACGACGCTCCATAAATTACATGAGTACCTTAGT
+
+Another wrong
+ACTGCTTCAGTTCCAACAACGACGCACCATAAATTACATGAGTACCTTAGT
+
+
+ACTGCTTCAGTTCCAACAACGACGCCCCATAAATTACATGAGTACCTTAGT
+ACTGCTTCAGTTCCAACAACGACGC
+						  CCATAAATTACATGAGTACCTTAGT
+
+
+
+						  Array
+(
+    [0] => Array
+        (
+            [pharma] => Amitriptilina
+            [gene] => ABCB1
+            [snp] => rs3789243
+            [equence] => ACTGCTTCAGTTCCAACAACGACGC[C/T]CCATAAATTACATGAGTACCTTAGT
+
+            [alteration] => false
+        )
+
+    [2] => Array
+        (
+            [pharma] => Amitriptilina
+            [gene] => ABCB1
+            [snp] => rs20177207
+            [equence] => ACTGCTTCAGTTCCAACAACGACGC[C/T]CCATAAATTACATGAGTACCTTAGT
+
+            [alteration] => false
+        )
