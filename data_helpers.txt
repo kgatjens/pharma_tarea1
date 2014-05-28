@@ -43,3 +43,45 @@ ACTGCTTCAGTTCCAACAACGACGC
 
             [alteration] => false
         )
+
+
+
+
+
+        el  paciente puede tener efectos secundarios cuando tiene variación, la idea es encontrar la docis apropiada.
+
+        los Rs se obtuvieron de diferentes pacientes, 
+
+        UM ultra rapid metabolisers
+        EM extensive metabolisers
+        IM intermetiate metabolisers
+        pm poor metabolisers.
+
+        -Dosis normal si me sale la letra normal, si me encuentro otra la dosis varia, hay una variacion, algo tiene que pasar ahí.
+
+
+        hay unos más variantes que otros.
+
+
+        evaluar un comportamiendo del farmaco atravez del tiempo, dependiendo dosificacion.
+
+        no podemos determinar que especificamente ese faramaco crea la alteracion, pueden ser muchas variantes, 
+
+
+
+
+TAREA 2
+ajustar dosis.
+dosis recomendada?
+
+Genotipado,
+
+
+
+ver pharmGKB.org
+
+secuenciacions sns
+
+
+
+

@@ -7,7 +7,7 @@
 
 <div id="footer" style="position:relative;">
 	<div class="container">
-        <p class="muted credit">Beta, Farmacogenómica <a href="#">Kenneth Brenes</a> 2014 </a>.</p>
+        <p class="muted credit">Beta, Farmacogen&oacute;mica <a href="#">Kenneth Brenes</a> 2014 </a>.</p>
     </div>
 </div>    
 

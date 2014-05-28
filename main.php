@@ -3,7 +3,7 @@
 /*
 *
 *	Class Pharmacogenomic
-*	Read sequense of genes, and check if exist an alteration not may cause conflict with some medications.
+*	Read equence of genes, and check if exist an alteration not may cause conflict with some medications.
 *	Author: Kenneth Brenes	
 *	May, 2014.
 *	Organization: UCR
@@ -28,7 +28,7 @@ class Pharmacogenomic{
 
 	function __construct() {
 		session_start();
-       	$this->stringToAnalyce = $_POST['sequense'];
+       	$this->stringToAnalyce = $_POST['sequence'];
        	$this->data = array();
        	$this->readCsv(SERVER_PATH.FILE_NAME);
 
@@ -36,48 +36,48 @@ class Pharmacogenomic{
 
    	function readCsv($fileName){
    		$linesArray = file($fileName);
-   		$this->createSequense($linesArray);
+   		$this->createequence($linesArray);
    	}
 
    	/*
-	*	Read from the file and creates an array with the sequense to be analyzed.
+	*	Read from the file and creates an array with the equence to be analyzed.
 	*
    	*/
-   	function createSequense($linesArray = array()){
+   	function createequence($linesArray = array()){
    		$SequenceDesc=array();
    		$sizes=array();
    		//if(!isset($_SESSION['read_file']) || $_SESSION['read_file']!=1){//read the data file only the first time
 	   		foreach ($linesArray as $key => $value) {
-	   			$sequense[] = explode(",", $value);
+	   			$equence[] = explode(",", $value);
 	   		}
 
-	   		foreach ($sequense as $key => $value) {
+	   		foreach ($equence as $key => $value) {
 	   			$sizes[] = explode("[", $value[3]);
 	   			$sizes[] = explode("]", $value[3]);
 
-	   			$sequense[$key]['leftHand'] = $sizes[0][0];
-	   			$sequense[$key]['originalChar'] = substr($sizes[0][1], 0, 1);//just to get the letter 
-	   			$sequense[$key]['wrongChar'] = substr($sizes[0][1], 2, 1);//just to get the letter 
-	   			$sequense[$key]['rightHand'] = $sizes[1][1];
+	   			$equence[$key]['leftHand'] = $sizes[0][0];
+	   			$equence[$key]['originalChar'] = substr($sizes[0][1], 0, 1);//just to get the letter 
+	   			$equence[$key]['wrongChar'] = substr($sizes[0][1], 2, 1);//just to get the letter 
+	   			$equence[$key]['rightHand'] = $sizes[1][1];
 	   			unset($sizes);
 	   			//$this->show($sizes);//debug
 	   		}
 	   		//$_SESSION['read_file']=1;
-	   		//$this->show($sequense);
-	   		$this->data = $sequense;
+	   		//$this->show($equence);
+	   		$this->data = $equence;
    		//}
-	   	$this->checkDirtySequense();
+	   	$this->checkDirtyequence();
    	}
 
    	/*
-	*	Consume, and analyze the data to check if que sequense is altered or not.
+	*	Consume, and analyze the data to check if que equence is altered or not.
 	*	
    	*/
-   	function checkDirtySequense(){
-   		$completeSequense = false;
-   		$leftSizeSequense = false;
-   		$displaySequenseData = array();
-   		$displaySequenseDataAlter = array();
+   	function checkDirtyequence(){
+   		$completeSequence = false;
+   		$leftSizeequence = false;
+   		$sequenceData = array();
+   		$sequenceDataAlter = array();
 
 		$i = 0;
    		foreach ($this->data as $key => $value) {
@@ -96,10 +96,10 @@ class Pharmacogenomic{
    			*/
 
    			if (preg_match($entire, $this->stringToAnalyce)) {
-		   		$completeSequense = true;
+		   		$completeSequence = true;
 	   		}
 	   		if (preg_match($leftPart, $this->stringToAnalyce)) {
-		   		$leftSizeSequense = true;
+		   		$leftSizeSequence = true;
 
 	   		}
 	   		
@@ -108,35 +108,57 @@ class Pharmacogenomic{
 	   		$this->show($this->data);
 	   		*/
 
-			if($completeSequense && $leftSizeSequense){ // no alteration
-				$displaySequenseData[$i]['pharma']	= $value[0];
-				$displaySequenseData[$i]['gene']	= $value[1];
-				$displaySequenseData[$i]['snp']		= $value[2];
-				$displaySequenseData[$i]['sequense']= $value[3];
-				$displaySequenseData[$i]['alteration']= 'false';
-			}else if($completeSequense){// complete gene with an alteration
-				$displaySequenseDataAlter[$i]['pharma']		= $value[0];
-				$displaySequenseDataAlter[$i]['gene']		= $value[1];
-				$displaySequenseDataAlter[$i]['snp']		= $value[2];
-				$displaySequenseDataAlter[$i]['sequense']	= $value[3];
-				$displaySequenseDataAlter[$i]['alteration']	= 'true';
+			if($completeSequence && $leftSizeSequence){ // no alteration
+				$sequenceData[$i]['pharma']		= $value[0];
+				$sequenceData[$i]['gene']		= $value[1];
+				$sequenceData[$i]['snp']		= $value[2];
+				$sequenceData[$i]['sequence']	= $value[3];
+				$sequenceData[$i]['alteration']	= 'false';
+			}else if($completeSequence){// complete gene with an alteration
+				$sequenceDataAlter[$i]['pharma']		= $value[0];
+				$sequenceDataAlter[$i]['gene']			= $value[1];
+				$sequenceDataAlter[$i]['snp']			= $value[2];
+				$sequenceDataAlter[$i]['sequence']		= $value[3];
+				$sequenceDataAlter[$i]['alteration']	= 'true';
 			}
 			else{ // not any gene
 
 			}
-			$completeSequense = $leftSizeSequense = false;
+			$completeSequence = $leftSizeequence = false;
 			$i++;
    			/*$value['leftHand'] 
    			$value['originalChar']
    			$value['rightHand']*/
-
-   			// The "i" after the pattern delimiter indicates a case-insensitive search
-			//if (preg_match("/php/i", "PHP is the web scripting language of choice.")) {
+   			
    		}
-   		//$this->stringToAnalyce;
-   		$this->show($displaySequenseData);
+   		   	
+   		   	//$this->show($sequenceData);
+
+   			$this->displaySequenceData($sequenceData);
+   			$this->displaySequenceDataAlter($sequenceDataAlter);
    	}
 
+
+   	/**
+	*
+	*
+   	*/
+   	function displaySequenceData($sequenceData = array()){
+   		if(count($sequenceData)>0){
+   			include('noAlterationTable.php');
+   		}
+   	}
+
+   	/**
+	*
+	*
+   	*/
+   	function displaySequenceDataAlter($sequenceDataAlter = array()){
+   		if(count($sequenceDataAlter)>0){
+   			include('alterationTable.php');
+   		}
+
+   	}
 
    	/***
 	Test method
@@ -174,6 +196,6 @@ class Pharmacogenomic{
 
 }
 
-$main_sequense = new Pharmacogenomic();
+$main_equence = new Pharmacogenomic();
 
 ?>
