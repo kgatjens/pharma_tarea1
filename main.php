@@ -17,7 +17,7 @@
 require_once('lib/db.php');
 
 
-define("SERVER_PATH",$_SERVER['HTTP_REFERER']); // Temporal
+define("SERVER_PATH",$_SERVER['HTTP_ORIGIN']); // Temporal
 define("FILE_NAME","cleanCsv.csv"); // Temporal
 
 class Pharmacogenomic{
@@ -32,14 +32,13 @@ class Pharmacogenomic{
        		$this->stringToAnalyce = $_POST['sequence'];
        	}
        	$this->data = array();
-       	$this->readCsv(SERVER_PATH.FILE_NAME);
+       	$this->readCsv(SERVER_PATH."/farmacogenomica/".FILE_NAME);
 
    	}
 
    	function readCsv($fileName){
-   		$this->show($_SERVER);
    		$linesArray = file($fileName);
-   		
+echo $fileName;   		
    		$this->createequence($linesArray);
    	}
 
