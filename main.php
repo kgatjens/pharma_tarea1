@@ -39,6 +39,7 @@ class Pharmacogenomic{
    	function readCsv($fileName){
    		
    		$linesArray = file($fileName);
+   		echo "read file";
    		$this->createequence($linesArray);
    	}
 
@@ -49,25 +50,27 @@ class Pharmacogenomic{
    	function createequence($linesArray = array()){
    		$SequenceDesc=array();
    		$sizes=array();
+   		echo "createequence -- entrando";
    		//if(!isset($_SESSION['read_file']) || $_SESSION['read_file']!=1){//read the data file only the first time
 	   		foreach ($linesArray as $key => $value) {
-	   			$equence[] = explode(",", $value);
+	   			$sequence[] = explode(",", $value);
 	   		}
 
-	   		foreach ($equence as $key => $value) {
+	   		foreach ($sequence as $key => $value) {
 	   			$sizes[] = explode("[", $value[3]);
 	   			$sizes[] = explode("]", $value[3]);
 
-	   			$equence[$key]['leftHand'] = $sizes[0][0];
-	   			$equence[$key]['originalChar'] = substr($sizes[0][1], 0, 1);//just to get the letter 
-	   			$equence[$key]['wrongChar'] = substr($sizes[0][1], 2, 1);//just to get the letter 
-	   			$equence[$key]['rightHand'] = $sizes[1][1];
+	   			$sequence[$key]['leftHand'] = $sizes[0][0];
+	   			$sequence[$key]['originalChar'] = substr($sizes[0][1], 0, 1);//just to get the letter 
+	   			$sequence[$key]['wrongChar'] = substr($sizes[0][1], 2, 1);//just to get the letter 
+	   			$sequence[$key]['rightHand'] = $sizes[1][1];
 	   			unset($sizes);
 	   			//$this->show($sizes);//debug
 	   		}
 	   		//$_SESSION['read_file']=1;
-	   		//$this->show($equence);
-	   		$this->data = $equence;
+	   		$this->show($sequence);
+	   		echo "desplegando secuencia";
+	   		$this->data = $sequence;
    		//}
 	   	$this->checkDirtyequence();
    	}
