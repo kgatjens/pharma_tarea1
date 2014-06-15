@@ -2,7 +2,7 @@
 <form role="form" action="data.php" method="post">
 	<fieldset >
 		<div class="form-group">
-		    <label for="">Introduzque la bacteria por buscar</label>
+		    <label for="">Ingrese la secuencia por buscar</label>
 			<input name="sequence" id="sequence" class="form-control input-sm" type="text" value="" class="span3" style="margin: 0 auto;">
 
 

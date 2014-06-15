@@ -17,7 +17,7 @@
 require_once('lib/db.php');
 
 
-define("SERVER_PATH","http://localhost:10088/bio_farma_tarea1/"); // Temporal
+define("SERVER_PATH",$_SERVER['HTTP_REFERER']); // Temporal
 define("FILE_NAME","cleanCsv.csv"); // Temporal
 
 class Pharmacogenomic{
@@ -28,13 +28,16 @@ class Pharmacogenomic{
 
 	function __construct() {
 		session_start();
-       	$this->stringToAnalyce = $_POST['sequence'];
+		if(isset($_POST['sequence'])){
+       		$this->stringToAnalyce = $_POST['sequence'];
+       	}
        	$this->data = array();
        	$this->readCsv(SERVER_PATH.FILE_NAME);
 
    	}
 
    	function readCsv($fileName){
+   		
    		$linesArray = file($fileName);
    		$this->createequence($linesArray);
    	}
@@ -75,7 +78,7 @@ class Pharmacogenomic{
    	*/
    	function checkDirtyequence(){
    		$completeSequence = false;
-   		$leftSizeequence = false;
+   		$leftSizeSequence = false;
    		$sequenceData = array();
    		$sequenceDataAlter = array();
 
@@ -87,26 +90,13 @@ class Pharmacogenomic{
    			
    			$leftPart 	= "/".$value['leftHand'].$value['originalChar']."/";
    			$leftPart = str_replace(array("\r", "\n"), "", $leftPart);			
-			
-			/*
-			echo "<br>";   			
-			echo $this->stringToAnalyce;
-			echo $i."<br>";
-   			echo "<br>";   			
-   			*/
 
    			if (preg_match($entire, $this->stringToAnalyce)) {
 		   		$completeSequence = true;
 	   		}
 	   		if (preg_match($leftPart, $this->stringToAnalyce)) {
 		   		$leftSizeSequence = true;
-
 	   		}
-	   		
-	   		/*
-	   		echo "entra3";
-	   		$this->show($this->data);
-	   		*/
 
 			if($completeSequence && $leftSizeSequence){ // no alteration
 				$sequenceData[$i]['pharma']		= $value[0];

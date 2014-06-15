@@ -14,7 +14,7 @@
 
       <div class="page-header">
         <img  src="img/master.png">
-        <p class="lead text-primary">Sistema Farmacogen&oacute;mico </p>
+        <a href="index.php"><p class="lead text-primary">Sistema Farmacogen&oacute;mico </p></a>
       </div>
 <?php
 //
