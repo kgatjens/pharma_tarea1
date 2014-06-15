@@ -38,6 +38,9 @@ class Pharmacogenomic{
 
    	function readCsv($fileName){
    		$linesArray = file($fileName);
+
+   		   		$this->show($linesArray);
+echo "dsfd";
    		$this->createequence($linesArray);
    	}
 
@@ -48,7 +51,6 @@ class Pharmacogenomic{
    	function createequence($linesArray = array()){
    		$SequenceDesc=array();
    		$sizes=array();
-   		$this->show($linesArray);
    		//if(!isset($_SESSION['read_file']) || $_SESSION['read_file']!=1){//read the data file only the first time
 	   		foreach ($linesArray as $key => $value) {
 	   			$sequence[] = explode(",", $value);
