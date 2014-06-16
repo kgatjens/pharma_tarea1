@@ -19,7 +19,7 @@ error_reporting(-1);
 ini_set('display_errors','On');
 
 define("SERVER_PATH",$_SERVER['HTTP_ORIGIN']); // Temporal
-define("FILE_NAME","cleanCsv.csv"); // Temporal
+define("FILE_NAME","cleancsv.csv"); // Temporal
 
 class Pharmacogenomic{
 
