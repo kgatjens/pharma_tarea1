@@ -37,6 +37,8 @@ class Pharmacogenomic{
    	}
 
    	function readCsv($fileName){
+
+   		echo $fileName."<br>";
    		$linesArray = file_get_contents($fileName);
 
    		   		$this->show($linesArray);
