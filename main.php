@@ -15,7 +15,8 @@
 */
 
 require_once('lib/db.php');
-
+error_reporting(-1);
+ini_set('display_errors','On');
 
 define("SERVER_PATH",$_SERVER['HTTP_ORIGIN']); // Temporal
 define("FILE_NAME","cleanCsv.csv"); // Temporal
@@ -39,7 +40,7 @@ class Pharmacogenomic{
    	function readCsv($fileName){
 
    		echo $fileName."<br>";
-   		$linesArray = file_get_contents($fileName);
+   		$linesArray = file($fileName);
 
    		   		$this->show($linesArray);
 echo "dsfd";
