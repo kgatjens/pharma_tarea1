@@ -63,20 +63,19 @@ class Pharmacogenomic{
 	   			$sizes[] = explode("[", $value[3]);
 	   			$sizes[] = explode("]", $value[3]);
 
-	   			$sequence[$key]['leftHand'] = $sizes[0][0];
+	   			$sequence[$key]['leftHand']     = $sizes[0][0];
 	   			$sequence[$key]['originalChar'] = substr($sizes[0][1], 0, 1);//just to get the letter 
-	   			$sequence[$key]['wrongChar'] = substr($sizes[0][1], 2, 1);//just to get the letter 
-	   			$sequence[$key]['rightHand'] = $sizes[1][1];
+	   			$sequence[$key]['wrongChar']    = substr($sizes[0][1], 2, 1);//just to get the letter 
+	   			$sequence[$key]['rightHand']    = $sizes[1][1];
 	   			unset($sizes);
 	   			//$this->show($sizes);//debug
 	   		}
-
-
 	   		
 	   		$this->data = $sequence;
-   		   $this->insertInCollection($sequence);
+   		   $inserted = $this->insertInCollection($this->data);
+            //$this->show($this->selectFromCollection());
          //}
-	   	$this->checkDirtySequence();
+	   	//$this->checkDirtySequence();
    	}
 
    /*
@@ -97,9 +96,6 @@ class Pharmacogenomic{
    			
    			$leftPart 	= $value['leftHand'].$value['originalChar'];
    			$leftPart = str_replace(array("\r", "\n"), "", $leftPart);			
-            
-
-
 
    			if (preg_match("/".$this->stringToAnalyce."/", $entire)) {
                $completeSequence = true;
@@ -125,11 +121,8 @@ class Pharmacogenomic{
 			else{ // not any gene
 
 			}
-			$completeSequence = $leftSizeequence = false;
-			$i++;
-   			/*$value['leftHand'] 
-   			$value['originalChar']
-   			$value['rightHand']*/
+   			$completeSequence = $leftSizeequence = false;
+   			$i++;
    			
    		}
    		   	
@@ -142,7 +135,7 @@ class Pharmacogenomic{
 
 
    	/**
-   	*
+   	*    Call the template to display the matches of sequense with no alteration
    	*
    	*/
    	function displaySequenceData($sequenceData = array()){
@@ -152,7 +145,7 @@ class Pharmacogenomic{
    	}
 
    	/**
-   	*
+   	*    Call the template to display the matches of sequense with an alteration
    	*
    	*/
    	function displaySequenceDataAlter($sequenceDataAlter = array()){
@@ -162,61 +155,35 @@ class Pharmacogenomic{
 
    	}
 
-   	/***
-	   *  Tester method
-      *
-   	*/
-   	function testCase(){
-
-   		$a = 'ACTGCTTCAGTTCCAACAACGACGC';
-   		$b = 'C';
-   		$c = 'CCATAAATTACATGAGTACCTTAGT';
-
-   		$ch = 'ACTGCTTCAGTTCCAACAACGACGCCCCATAAATTACATGAGTACCTTAGT';
-
-
-   		$m = 'ACTGCTTCAGTTCCAACAACGACGCMCCATAAATTACATGAGTACCTTAGT';
-   		echo $exp = "/".$a.$b."/";
-   		echo $exp2 = "/".$a."[A-Z]".$c."/";
-   		echo "<br>";
-   		if (preg_match($exp2, $m)) {
-   			echo "yes";
-   		}else{echo "no";}
-   	}
-
       /**
       * Find a pattern in an expression 
       *
       *
       */
       function selectFromCollection($expression = "", $attribute = ""){
-         $expression = '.*N2A.*';
+         $expression = '.*CB.*';
          $attribute ='gene';
 
          $collection = getMongoConnection();
 
-         $filter = array($attribute => $expression);
-
-         $cursor = $collection->find(array('$regex' => $filter));
-
-         $where=array($attribute => array('$regex'=>$filter));
+         $where=array('gene' => array('$regex'=>$expression),'gene' => array('$regex'=>$expression));
          $cursor = $collection->find($where);
-         
-         echo "<pre>";
-         foreach ($cursor as $doc) {
-             var_dump($doc);
-         }
+       
+         return $array = iterator_to_array($cursor);   
       }
 
       /**
-      *
+      *     Insert into the MongoDb all the sequense data from a read
       *
       */
       function insertInCollection($data = array()){
          $collection = getMongoConnection();
-
+         $error      = array();
+         $i = 0;
 
          foreach ($data as $key => $value) {
+              
+            $doc['_id']       = $i;
             $doc['pharma']       = $value[0];
             $doc['gene']         = $value[1];
             $doc['snp']          = $value[2];
@@ -226,19 +193,41 @@ class Pharmacogenomic{
             $doc['originalChar'] = $value['originalChar'];
             $doc['wrongChar']    = $value['wrongChar'];
             $doc['rightHand']    = $value['rightHand'];
+            $doc['alteredSequense']    = $value['leftHand'].$value['wrongChar'].$value['rightHand'];
+            $doc['originalSequense']   = $value['leftHand'].$value['originalChar'].$value['rightHand'];;
+            $doc['leftHandChar']       = $value['leftHand'].$value['wrongChar'];
 
-
+            try {
+               $collection->insert( $doc );
+            } catch(MongoCursorException $e) {
+               $error[$i] = "Error adding the index: ".$i;
+            }
+            $i++;
          }
+          
+         $this->show($data);
 
-         $collection->insert( $doc );
-         $this->selectFromCollection();
-
-
-         $this->show($doc,2);
+         return true;
       }
 
       /*
-   	* 		- HELPER
+      *  
+      *
+      */
+      function template($a = ""){
+         return $a;
+      }
+      
+
+      /*
+      **********************************
+      *     HELPERS
+      *
+      **********************************
+      */
+
+      /*
+   	* Main display method
    	*  
    	$this->show($value);
    	*/
@@ -249,6 +238,35 @@ class Pharmacogenomic{
    		echo "</pre>";
    		exit;
    	}
+
+      /***
+      *  Tester method, 
+      *
+      */
+      function testCase(){
+
+         $a = 'ACTGCTTCAGTTCCAACAACGACGC';
+         $b = 'C';
+         $c = 'CCATAAATTACATGAGTACCTTAGT';
+
+         $ch = 'ACTGCTTCAGTTCCAACAACGACGCCCCATAAATTACATGAGTACCTTAGT';
+
+         $m = 'ACTGCTTCAGTTCCAACAACGACGCMCCATAAATTACATGAGTACCTTAGT';
+         echo $exp = "/".$a.$b."/";
+         echo $exp2 = "/".$a."[A-Z]".$c."/";
+         echo "<br>";
+         if (preg_match($exp2, $m)) {
+            echo "yes";
+         }else{echo "no";}
+      }
+
+      /*
+      *  Desc.
+      *
+      */
+      function functionTemplate($a = ""){
+         return $a;
+      }
 
 
 

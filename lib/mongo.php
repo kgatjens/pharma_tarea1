@@ -12,13 +12,12 @@
 require_once 'config.php';
 
 	function getMongoConnection() {
-
+		
 		try 
 		{
 	      $m = new MongoClient();
-	      $db = $m->selectDB('DB_HOST');
-	      $collection = new MongoCollection($db, 'DB_COLLECTION');
-
+	      $db = $m->selectDB(DB_MONGO);
+	      $collection = new MongoCollection($db, DB_COLLECTION);
 	      return $collection;
 	  	}
 	  	catch ( MongoConnectionException $e ) 
