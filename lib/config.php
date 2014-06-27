@@ -19,6 +19,10 @@ define("DB_HOST","127.0.0.1");
 define("DB_USER","root");
 define("DB_PASS","");
 
+define("DB_MONGO","pharma");
+define("DB_COLLECTION","pharma_sequense");
+
+
 /*
 $configDB = array(
     'host'    	=> '127.0.0.1',

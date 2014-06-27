@@ -1,0 +1,89 @@
+
+
+  			[farmaco] => Amitriptilina
+            [gen] => ABCB1
+            [SNP] => rs3789243
+            [secuencia] => ACTGCTTCAGTTCCAACAACGACGC[C/T]CCATAAATTACATGAGTACCTTAGT
+            [metabolizador]
+
+            [leftHand] => ACTGCTTCAGTTCCAACAACGACGC
+            [originalChar] => C
+            [wrongChar] => T
+            [rightHand] => CCATAAATTACATGAGTACCTTAGT
+
+
+
+
+db.createCollection("pharma_data", { capped : true, size : 5242880, max : 50000 })            
+
+
+db.pharma_data.insert( { pharma: "Amitriptilina", gene: "ABCB1", snp: "rs3789243" , sequense:"ACTGCTTCAGTTCCAACAACGACGC[C/T]CCATAAATTACATGAGTACCTTAGT" , metabolizer: "No hay informacion relacionada" , leftHand: "ACTGCTTCAGTTCCAACAACGACGC" , originalChar:"C" , wrongChar: "T"  , rightHand: "CCATAAATTACATGAGTACCTTAGT" } )
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+db.pharma.find()
+
+
+db.pharma.find( { gene: "ABCB1" } )
+
+
+myCursor.forEach(printjson);
+db.bios.find().sort( { name: 1 } ).limit( 5 )
+db.bios.find().limit( 5 ).sort( { name: 1 } )
+
+
+db.pharma.findOne({"gene" : {$regex : ".*BC.*"}})
+
+
+php -i | grep 'Mongo'
+php -i | grep 'Configuration File'
+
+/usr/local/zend/bin/zendctl.sh restart
+
+
+/usr/local/zend/apache2/
+
+
+> db.pharma_data.find().pretty()
+
+
+//      $array = iterator_to_array($cursor); //  returning array
+//  $results = $collection->find( array( '$or' => array( array('fruit' => 'Apple'), array('fruit' => 'Orange') ) ) );
+
+
+            $m = new MongoClient();
+            $db = $m->selectDB('pharma');
+            $collection = new MongoCollection($db, 'pharma_data');
+
+
+            $filter = array('gene' => '.*BC.*');
+            //$filter = array('snp' => 'rs3789243');
+
+
+            //$cursor = $collection->find({"gene" : {$regex : ".*BC.*"}})
+            $cursor = $collection->find(array('$regex' => $filter));
+
+            $where=array('gene' => array('$regex'=>'.*BC.*'));
+            $cursor = $collection->find($where);
+            
+            echo "<pre>";
+            foreach ($cursor as $doc) {
+                var_dump($doc);
+            }
+
+
+
+            $cursor = $collection->find(array(
+               'gene' => array('$in' => array('BC'))
+            ));
+
+            //$cursor = $collection->find($filter);
+      //      $array = iterator_to_array($cursor); //  returning array
+      //  $results = $collection->find( array( '$or' => array( array('fruit' => 'Apple'), array('fruit' => 'Orange') ) ) );
+
+
+++++++++++++++      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+

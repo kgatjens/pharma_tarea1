@@ -14,12 +14,13 @@
 *
 */
 
-require_once('lib/db.php');
+//require_once('lib/db.php');
+require_once('lib/mongo.php');
 error_reporting(-1);
 ini_set('display_errors','On');
 
-define("SERVER_PATH",$_SERVER['HTTP_ORIGIN']); // Temporal
-define("FILE_NAME","data.csv"); // Temporal
+define("SERVER_PATH",$_SERVER['HTTP_REFERER']); // Temporal
+define("FILE_NAME","cleanCsv.csv"); // Temporal
 
 class Pharmacogenomic{
 
@@ -33,29 +34,26 @@ class Pharmacogenomic{
        		$this->stringToAnalyce = $_POST['sequence'];
        	}
        	$this->data = array();
-       	$this->readCsv(SERVER_PATH."/farmacogenomica/".FILE_NAME);
+       	$this->readCsv(SERVER_PATH."/".FILE_NAME);
 
    	}
 
    	function readCsv($fileName){
-
-   		echo $fileName."<br>";
    		set_time_limit(1000000); 
 
    		$linesArray = file($fileName);
 
-   		   		$this->show($linesArray);
-echo "dsfd";
-   		$this->createequence($linesArray);
+   		$this->createSequence($linesArray);
    	}
 
    	/*
-	*	Read from the file and creates an array with the equence to be analyzed.
-	*
+   	*	Read from the file and creates an array with the equence to be analyzed.
+   	*
    	*/
-   	function createequence($linesArray = array()){
+   	function createSequence($linesArray = array()){
    		$SequenceDesc=array();
    		$sizes=array();
+
    		//if(!isset($_SESSION['read_file']) || $_SESSION['read_file']!=1){//read the data file only the first time
 	   		foreach ($linesArray as $key => $value) {
 	   			$sequence[] = explode(",", $value);
@@ -72,40 +70,45 @@ echo "dsfd";
 	   			unset($sizes);
 	   			//$this->show($sizes);//debug
 	   		}
-	   		//$_SESSION['read_file']=1;
-	   		$this->show($sequence);
-	   		echo "desplegando secuencia";
+
+
+	   		
 	   		$this->data = $sequence;
-   		//}
-	   	$this->checkDirtyequence();
+   		   $this->insertInCollection($sequence);
+         //}
+	   	$this->checkDirtySequence();
    	}
 
-   	/*
+   /*
 	*	Consume, and analyze the data to check if que equence is altered or not.
 	*	
-   	*/
-   	function checkDirtyequence(){
+   */
+   	function checkDirtySequence(){
    		$completeSequence = false;
    		$leftSizeSequence = false;
    		$sequenceData = array();
    		$sequenceDataAlter = array();
 
 		$i = 0;
+     // $this->show($this->data);
    		foreach ($this->data as $key => $value) {
+   			$entire 	= $value['leftHand']."[A-Z]".$value['rightHand'];
+            $entire = str_replace(array("\r", "\n"), "", $entire);
    			
-   			$entire 	= "/".$value['leftHand']."[A-Z]".$value['rightHand']."/";
-   			$entire = str_replace(array("\r", "\n"), "", $entire);
-   			
-   			$leftPart 	= "/".$value['leftHand'].$value['originalChar']."/";
+   			$leftPart 	= $value['leftHand'].$value['originalChar'];
    			$leftPart = str_replace(array("\r", "\n"), "", $leftPart);			
+            
 
-   			if (preg_match($entire, $this->stringToAnalyce)) {
-		   		$completeSequence = true;
-	   		}
-	   		if (preg_match($leftPart, $this->stringToAnalyce)) {
-		   		$leftSizeSequence = true;
-	   		}
 
+
+   			if (preg_match("/".$this->stringToAnalyce."/", $entire)) {
+               $completeSequence = true;
+               
+	   		}
+	   		if (preg_match("/".$this->stringToAnalyce."/", $leftPart)) {
+               $leftSizeSequence = true;
+               
+	   		}
 			if($completeSequence && $leftSizeSequence){ // no alteration
 				$sequenceData[$i]['pharma']		= $value[0];
 				$sequenceData[$i]['gene']		= $value[1];
@@ -131,15 +134,16 @@ echo "dsfd";
    		}
    		   	
    		   	//$this->show($sequenceData);
-
+               //$this->show($sequenceDataAlter);
    			$this->displaySequenceData($sequenceData);
    			$this->displaySequenceDataAlter($sequenceDataAlter);
+
    	}
 
 
    	/**
-	*
-	*
+   	*
+   	*
    	*/
    	function displaySequenceData($sequenceData = array()){
    		if(count($sequenceData)>0){
@@ -148,8 +152,8 @@ echo "dsfd";
    	}
 
    	/**
-	*
-	*
+   	*
+   	*
    	*/
    	function displaySequenceDataAlter($sequenceDataAlter = array()){
    		if(count($sequenceDataAlter)>0){
@@ -159,8 +163,8 @@ echo "dsfd";
    	}
 
    	/***
-	Test method
-
+	   *  Tester method
+      *
    	*/
    	function testCase(){
 
@@ -172,25 +176,81 @@ echo "dsfd";
 
 
    		$m = 'ACTGCTTCAGTTCCAACAACGACGCMCCATAAATTACATGAGTACCTTAGT';
-		echo $exp = "/".$a.$b."/";
-		echo $exp2 = "/".$a."[A-Z]".$c."/";
-		echo "<br>";
+   		echo $exp = "/".$a.$b."/";
+   		echo $exp2 = "/".$a."[A-Z]".$c."/";
+   		echo "<br>";
    		if (preg_match($exp2, $m)) {
    			echo "yes";
    		}else{echo "no";}
    	}
 
-   	/*
-	* 		- HELPER
-	*  
-	$this->show($value);
-	*/
-	function show($array=array()){
-		echo "<pre>";
-		print_r($array);
-		echo "</pre>";
-		exit;
-	}
+      /**
+      * Find a pattern in an expression 
+      *
+      *
+      */
+      function selectFromCollection($expression = "", $attribute = ""){
+         $expression = '.*N2A.*';
+         $attribute ='gene';
+
+         $collection = getMongoConnection();
+
+         $filter = array($attribute => $expression);
+
+         $cursor = $collection->find(array('$regex' => $filter));
+
+         $where=array($attribute => array('$regex'=>$filter));
+         $cursor = $collection->find($where);
+         
+         echo "<pre>";
+         foreach ($cursor as $doc) {
+             var_dump($doc);
+         }
+      }
+
+      /**
+      *
+      *
+      */
+      function insertInCollection($data = array()){
+         $collection = getMongoConnection();
+
+
+         foreach ($data as $key => $value) {
+            $doc['pharma']       = $value[0];
+            $doc['gene']         = $value[1];
+            $doc['snp']          = $value[2];
+            $doc['sequense']     = $value[3];
+            $doc['metabolizer']  = $value[4];
+            $doc['leftHand']     = $value['leftHand'];
+            $doc['originalChar'] = $value['originalChar'];
+            $doc['wrongChar']    = $value['wrongChar'];
+            $doc['rightHand']    = $value['rightHand'];
+
+
+         }
+
+         $collection->insert( $doc );
+         $this->selectFromCollection();
+
+
+         $this->show($doc,2);
+      }
+
+      /*
+   	* 		- HELPER
+   	*  
+   	$this->show($value);
+   	*/
+   	function show($array=array(), $i = 1){
+   		echo "Test function:".$i."<br>";
+         echo "<pre>";
+   		print_r($array);
+   		echo "</pre>";
+   		exit;
+   	}
+
+
 
 }
 

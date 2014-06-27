@@ -3,7 +3,7 @@
  * Data Base Library
  * @Kenneth Brenes
  *  Organization: UCR
- *   https://github.com/kgatjens/bio_ftp.git
+ *   
  */
 
 /**

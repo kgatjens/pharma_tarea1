@@ -13,8 +13,10 @@
   	<div class="container">
 
       <div class="page-header">
+      <!--
         <img  src="img/master.png">
         <a href="index.php"><p class="lead text-primary">Sistema Farmacogen&oacute;mico </p></a>
+        -->
       </div>
 <?php
 //
