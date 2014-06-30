@@ -1,0 +1,1 @@
+<h3>Resultados para la b&uacute;squeda: <i><?php echo @$this->stringToAnalyce; ?></i></h3>

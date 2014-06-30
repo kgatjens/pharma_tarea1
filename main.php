@@ -34,7 +34,10 @@ class Pharmacogenomic{
        		$this->stringToAnalyce = $_POST['sequence'];
        	}
        	$this->data = array();
-       	$this->readCsv(SERVER_PATH."/".FILE_NAME);
+       	//$this->readCsv(SERVER_PATH."/".FILE_NAME);
+         
+         //$this->selectAll();// Test Function
+         $this->selectFromCollection($this->stringToAnalyce);
 
    	}
 
@@ -73,9 +76,7 @@ class Pharmacogenomic{
 	   		
 	   		$this->data = $sequence;
    		   $inserted = $this->insertInCollection($this->data);
-            //$this->show($this->selectFromCollection());
-         //}
-	   	//$this->checkDirtySequence();
+            
    	}
 
    /*
@@ -125,11 +126,7 @@ class Pharmacogenomic{
    			$i++;
    			
    		}
-   		   	
-   		   	//$this->show($sequenceData);
-               //$this->show($sequenceDataAlter);
-   			$this->displaySequenceData($sequenceData);
-   			$this->displaySequenceDataAlter($sequenceDataAlter);
+   		   
 
    	}
 
@@ -161,15 +158,25 @@ class Pharmacogenomic{
       *
       */
       function selectFromCollection($expression = "", $attribute = ""){
-         $expression = '.*CB.*';
-         $attribute ='gene';
+         //$expression = '.*GGCTGAAGTGTTTTACAGGATTTTAA.*';
+         $expression = '.*'.$expression.'.*';
 
          $collection = getMongoConnection();
 
-         $where=array('gene' => array('$regex'=>$expression),'gene' => array('$regex'=>$expression));
-         $cursor = $collection->find($where);
+         $whereNoAlteration=array('originalSequense' => array('$regex'=>$expression));
+         $whereAlteration=array('alteredSequense' => array('$regex'=>$expression));
+         $cursorNoAlteration = $collection->find($whereNoAlteration);
+         $cursorAlteration = $collection->find($whereAlteration);
        
-         return $array = iterator_to_array($cursor);   
+         include('results.php');
+         $this->displaySequenceData(iterator_to_array($cursorNoAlteration));
+         $this->displaySequenceDataAlter(iterator_to_array($cursorAlteration));
+
+         /*
+         $this->show(iterator_to_array($cursorNoAlteration));
+         echo ">>><br>";
+         $this->show(iterator_to_array($cursorAlteration));
+         */         
       }
 
       /**
@@ -205,19 +212,10 @@ class Pharmacogenomic{
             $i++;
          }
           
-         $this->show($data);
+         //$this->show($doc);
 
          return true;
-      }
-
-      /*
-      *  
-      *
-      */
-      function template($a = ""){
-         return $a;
-      }
-      
+      }      
 
       /*
       **********************************
@@ -233,10 +231,11 @@ class Pharmacogenomic{
    	*/
    	function show($array=array(), $i = 1){
    		echo "Test function:".$i."<br>";
+         echo "Total rows: ".count($array)."<br>";
          echo "<pre>";
    		print_r($array);
    		echo "</pre>";
-   		exit;
+   		//exit;
    	}
 
       /***
@@ -260,6 +259,17 @@ class Pharmacogenomic{
          }else{echo "no";}
       }
 
+      /*
+      *     Select all from the used Mongo Collection and show it.
+      *
+      */
+      function selectAll(){
+         
+         $collection = getMongoConnection();
+         $data = $collection->find();
+
+         $this->show(iterator_to_array($data));
+      }
       /*
       *  Desc.
       *

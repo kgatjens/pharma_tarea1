@@ -14,6 +14,7 @@
 
 
 
+
 db.createCollection("pharma_data", { capped : true, size : 5242880, max : 50000 })            
 
 
@@ -82,9 +83,28 @@ php -i | grep 'Configuration File'
       //  $results = $collection->find( array( '$or' => array( array('fruit' => 'Apple'), array('fruit' => 'Orange') ) ) );
 
 
-++++++++++++++      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-++++++++++++++      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 > db.pharma_sequense.remove({})
 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Array
+(
+    [_id] => 41
+    [pharma] => Carbamazepina
+    [gene] => SCN2A
+    [snp] => rs2304016
+    [sequense] => GGCTGAAGTGTTTTACAGGATTTTA[A/G]TGATTCTTTCTATTCCTTTCTCTTT
+    [metabolizer] =>  
+    [leftHand] => GGCTGAAGTGTTTTACAGGATTTTA
+    [originalChar] => A
+    [wrongChar] => G
+    [rightHand] => TGATTCTTTCTATTCCTTTCTCTTT
+    [alteredSequense] => GGCTGAAGTGTTTTACAGGATTTTAGTGATTCTTTCTATTCCTTTCTCTTT
+    [originalSequense] => GGCTGAAGTGTTTTACAGGATTTTAATGATTCTTTCTATTCCTTTCTCTTT
+    [leftHandChar] => GGCTGAAGTGTTTTACAGGATTTTAG
+)
 
 
