@@ -108,3 +108,29 @@ Array
 )
 
 
+GGCTGAAGTGTTTTACAGGATTTTAGTGATTCTTTCTATTCCTTTCTCTTT
+GGCTGAAGTGTTTTACAGGATTTTAA
+leftHandChar
+
+
+ssh bioinformatica.em@bioinformatica.ucr.ac.cr -P APBIEM210802
+
+jbrenes@laica.co.cr
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CentOS release 6.2 (Final)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/export/apps/serviciosBioinformaticos
+
+
+6703 NW 7th St.
+SJO -30746
+Miami, FL 33126
+
+6703 NW 7th St. SJO30746
+
+
+/bin/mongodb/mongodb-linux-x86_64-2.6.3/bin
+
+

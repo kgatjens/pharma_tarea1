@@ -30,6 +30,24 @@ class Pharmacogenomic{
 
 	function __construct() {
 		session_start();
+
+      if(isset($_GET['display'])){
+         switch ($_GET['display']) {
+           case "add_csv":
+              $this->addCsv();
+              break;
+          case "all":
+              $this->displayAllDrugs();
+              break;
+          case "add":
+              $this->displayAddForm();
+              break;
+          case "delete":
+              $this->deleteDrugs();
+              break;
+         }
+      }
+
 		if(isset($_POST['sequence'])){
        		$this->stringToAnalyce = $_POST['sequence'];
        	}
@@ -168,7 +186,11 @@ class Pharmacogenomic{
          $cursorNoAlteration = $collection->find($whereNoAlteration);
          $cursorAlteration = $collection->find($whereAlteration);
        
+         $total = 0;
+         $total = count(iterator_to_array($cursorNoAlteration)) + count(iterator_to_array($cursorAlteration));
+         //if($total>0)$total++;
          include('results.php');
+
          $this->displaySequenceData(iterator_to_array($cursorNoAlteration));
          $this->displaySequenceDataAlter(iterator_to_array($cursorAlteration));
 
@@ -218,6 +240,70 @@ class Pharmacogenomic{
       }      
 
       /*
+      *     Select all from the used Mongo Collection and add it to array.
+      *
+      */
+      function displayAllDrugs(){
+         
+         $collection = getMongoConnection();
+         $data = $collection->find();
+
+         $data = iterator_to_array($data);
+
+         if(count($sequenceData)>0){
+            include('display_all.php');
+         }
+      }
+
+      /*
+      *     Select all from the used Mongo Collection and add it to array.
+      *
+      */
+      function addCsv(){
+         
+         $collection = getMongoConnection();
+         $data = $collection->find();
+
+         $data = iterator_to_array($data);
+
+         if(count($sequenceData)>0){
+            include('noAlterationTable.php');
+         }
+      }
+
+      /*
+      *     Select all from the used Mongo Collection and add it to array.
+      *
+      */
+      function displayAddForm(){
+         
+         $collection = getMongoConnection();
+         $data = $collection->find();
+
+         $data = iterator_to_array($data);
+
+         if(count($sequenceData)>0){
+            include('noAlterationTable.php');
+         }
+      }
+
+      /*
+      *     Select all from the used Mongo Collection and add it to array.
+      *
+      */
+      function deleteDrugs(){
+         
+         $collection = getMongoConnection();
+         $data = $collection->find();
+
+         $data = iterator_to_array($data);
+
+         if(count($sequenceData)>0){
+            include('noAlterationTable.php');
+         }
+      }
+
+      /*
       **********************************
       *     HELPERS
       *
@@ -258,6 +344,7 @@ class Pharmacogenomic{
             echo "yes";
          }else{echo "no";}
       }
+
 
       /*
       *     Select all from the used Mongo Collection and show it.

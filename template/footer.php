@@ -17,6 +17,8 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap-typeahead.js"></script>
+    <script src="js/social.js"></script>
+
     
   </body>
 </html>
