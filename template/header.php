@@ -25,9 +25,14 @@
       ?>
 
 
-<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="index.php">Buscar una secuencia en un f&aacute;rmaco</a></li>
-  <li><a href="index.php?display=all">Desplegar el registro de f&aacute;rmaco</a></li>
-  <li><a href="#">Messages</a></li>
-</ul>
+<nav class="navbar navbar-default" role="navigation">
+   <div>
+      <ul class="nav navbar-nav ">
+        <li><a class="btn btn-info" href="index.php">B&uacute;squeda</a></li>
+        <li><a class="btn btn-success" href="display_all.php">Desplegar secuencias</a></li>
+        <li><a class="btn btn-warning" href="#">Agregar una secuencia</a></li>
+        <li><a class="btn btn-danger" href="#">Agregar un Archivo CSV</a></li>
+      </ul>
+   </div>
+</nav>
 

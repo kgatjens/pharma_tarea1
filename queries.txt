@@ -114,6 +114,7 @@ leftHandChar
 
 
 ssh bioinformatica.em@bioinformatica.ucr.ac.cr -P APBIEM210802
+ssh bioinformatica.em@bioinformatica.ucr.ac.cr
 
 jbrenes@laica.co.cr
 
@@ -132,5 +133,5 @@ Miami, FL 33126
 
 
 /bin/mongodb/mongodb-linux-x86_64-2.6.3/bin
-
+cd 
 

@@ -86,3 +86,7 @@ code {
 .dataContainer{
   margin:20px;
 }
+
+.btn.btn-info{
+  color:#fff;
+}

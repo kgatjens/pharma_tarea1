@@ -1,8 +1,5 @@
 
 
-<?php
-//
-?>
 </div> <!-- /container -->
 
 <div id="footer" style="position:fixed;">

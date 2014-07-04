@@ -28,16 +28,17 @@ class Pharmacogenomic{
 	public $file_location;
 	public $data;
 
-	function __construct() {
+	function __construct($action = "") {
 		session_start();
-
-      if(isset($_GET['display'])){
-         switch ($_GET['display']) {
+      $this->data = array();
+      if(isset($action)){
+         switch ($action) {
            case "add_csv":
               $this->addCsv();
               break;
           case "all":
               $this->displayAllDrugs();
+              unset($_POST);
               break;
           case "add":
               $this->displayAddForm();
@@ -48,15 +49,12 @@ class Pharmacogenomic{
          }
       }
 
-		if(isset($_POST['sequence'])){
+		 if(isset($_POST['sequence'])){
        		$this->stringToAnalyce = $_POST['sequence'];
-       	}
-       	$this->data = array();
+            $this->selectFromCollection($this->stringToAnalyce);
+       }
        	//$this->readCsv(SERVER_PATH."/".FILE_NAME);
-         
          //$this->selectAll();// Test Function
-         $this->selectFromCollection($this->stringToAnalyce);
-
    	}
 
    	function readCsv($fileName){
@@ -244,14 +242,13 @@ class Pharmacogenomic{
       *
       */
       function displayAllDrugs(){
-         
+
          $collection = getMongoConnection();
          $data = $collection->find();
 
          $data = iterator_to_array($data);
-
-         if(count($sequenceData)>0){
-            include('display_all.php');
+         if(count($data)>0){
+            include('template/display.php');
          }
       }
 
@@ -369,6 +366,6 @@ class Pharmacogenomic{
 
 }
 
-$main_equence = new Pharmacogenomic();
+$main_equence = new Pharmacogenomic($action);
 
 ?>
