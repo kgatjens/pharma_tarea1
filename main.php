@@ -28,13 +28,26 @@ class Pharmacogenomic{
 	public $file_location;
 	public $data;
 
+
+
 	function __construct($action = "") {
 		session_start();
       $this->data = array();
+
+if ($_FILES["file"]["error"] > 0) {
+  echo "Error: " . $_FILES["file"]["error"] . "<br>";
+} else {
+  echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+  echo "Type: " . $_FILES["file"]["type"] . "<br>";
+  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+  echo "Stored in: " . $_FILES["file"]["tmp_name"];
+}
+
+
       if(isset($action)){
          switch ($action) {
-           case "add_csv":
-              $this->addCsv();
+           case "upload":
+              $this->uploadFile();
               break;
           case "all":
               $this->displayAllDrugs();
@@ -48,6 +61,15 @@ class Pharmacogenomic{
               break;
          }
       }
+
+
+       if( $_FILES['file']['name'] != "" ){
+   
+            copy( $_FILES['file']['name'], "/" ) or  die( "Error con Archivo!");
+
+            include('template/success.php');
+           
+       }
 
 		 if(isset($_POST['sequence'])){
        		$this->stringToAnalyce = $_POST['sequence'];
@@ -366,6 +388,6 @@ class Pharmacogenomic{
 
 }
 
-$main_equence = new Pharmacogenomic($action);
+$main_equence = new Pharmacogenomic(@$action);
 
 ?>
