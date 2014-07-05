@@ -17,7 +17,7 @@
     
         <img  src="img/master.png">
         <a href="index.php"><p class="lead text-primary">Sistema Farmacogen&oacute;mico </p></a>
-       
+    
       </div>
 
       <?php
@@ -30,7 +30,7 @@
       <ul class="nav navbar-nav ">
         <li><a class="btn btn-info" href="index.php">B&uacute;squeda</a></li>
         <li><a class="btn btn-success" href="display_all.php">Desplegar secuencias</a></li>
-        <li><a class="btn btn-warning" href="#">Agregar una secuencia</a></li>
+        <li><a class="btn btn-warning" href="add.php">Agregar una secuencia</a></li>
         <li><a class="btn btn-danger" href="upload_file.php">Agregar un Archivo CSV</a></li>
       </ul>
    </div>

@@ -34,16 +34,6 @@ class Pharmacogenomic{
 		session_start();
       $this->data = array();
 
-if ($_FILES["file"]["error"] > 0) {
-  echo "Error: " . $_FILES["file"]["error"] . "<br>";
-} else {
-  echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-  echo "Type: " . $_FILES["file"]["type"] . "<br>";
-  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-  echo "Stored in: " . $_FILES["file"]["tmp_name"];
-}
-
-
       if(isset($action)){
          switch ($action) {
            case "upload":
@@ -62,14 +52,24 @@ if ($_FILES["file"]["error"] > 0) {
          }
       }
 
+      if(isset($_POST['pharma'])){
+         $insertion =  $this->parseFromInsert($_POST);
+         if($insertion){
+             $message = '<div class="alert alert-success">Se ha ingresado la cadena.</div>';
+             include('add.php');
+         }
+             $message = '<div class="alert alert-danger">Ha ocurrido un error ingresando la secuencia.</div>';
+             include('add.php');
+      }
 
-       if( $_FILES['file']['name'] != "" ){
+
+       /*if( $_FILES['file']['name'] != "" ){
    
             copy( $_FILES['file']['name'], "/" ) or  die( "Error con Archivo!");
 
             include('template/success.php');
            
-       }
+       }*/
 
 		 if(isset($_POST['sequence'])){
        		$this->stringToAnalyce = $_POST['sequence'];
@@ -117,19 +117,41 @@ if ($_FILES["file"]["error"] > 0) {
             
    	}
 
-   /*
-	*	Consume, and analyze the data to check if que equence is altered or not.
-	*	
-   */
+      /*
+      *  Set up the POST array to be added in the collection
+      *
+      */
+      function parseFromInsert($post = ""){
+               
+         $sizes[] = explode("[", $post['sequense']);
+         $sizes[] = explode("]", $post['sequense']);
+
+         $post['leftHand']     = $sizes[0][0];
+         @$post['originalChar'] = substr($sizes[0][1], 0, 1);//just to get the letter 
+         @$post['wrongChar']    = substr($sizes[0][1], 2, 1);//just to get the letter 
+         @$post['rightHand']    = $sizes[1][1];
+
+         //$this->show($post);exit;
+         if($post['rightHand'] != ''){ //insert in DB
+            return $this->insertSingleCollection($post);
+         }else{
+            return false;
+         }         
+      }
+
+      /*
+   	*	Consume, and analyze the data to check if que equence is altered or not.
+   	*	
+      */
    	function checkDirtySequence(){
    		$completeSequence = false;
    		$leftSizeSequence = false;
    		$sequenceData = array();
    		$sequenceDataAlter = array();
 
-		$i = 0;
-     // $this->show($this->data);
-   		foreach ($this->data as $key => $value) {
+   		$i = 0;
+        // $this->show($this->data);
+      	foreach ($this->data as $key => $value) {
    			$entire 	= $value['leftHand']."[A-Z]".$value['rightHand'];
             $entire = str_replace(array("\r", "\n"), "", $entire);
    			
@@ -249,7 +271,7 @@ if ($_FILES["file"]["error"] > 0) {
             try {
                $collection->insert( $doc );
             } catch(MongoCursorException $e) {
-               $error[$i] = "Error adding the index: ".$i;
+               $error[$i] = "Error agregando el indice: ".$i;
             }
             $i++;
          }
@@ -257,7 +279,44 @@ if ($_FILES["file"]["error"] > 0) {
          //$this->show($doc);
 
          return true;
-      }      
+      }
+
+      /*
+      *  Inserting just one sequense
+      *
+      */
+      function insertSingleCollection($data = ""){
+             
+            $collection = getMongoConnection();
+            
+            $cursor = $collection->find();
+            $id = count(iterator_to_array($cursor));
+
+            
+            $doc['_id']          = $id++;
+            $doc['pharma']       = $data['pharma'];
+            $doc['gene']         = $data['gene'];
+            $doc['snp']          = $data['snp'];
+            $doc['sequense']     = $data['sequense'];
+            $doc['metabolizer']  = $data['metabolizer'];
+            $doc['leftHand']     = $data['leftHand'];
+            $doc['originalChar'] = $data['originalChar'];
+            $doc['wrongChar']    = $data['wrongChar'];
+            $doc['rightHand']    = $data['rightHand'];
+            $doc['alteredSequense']    = $data['leftHand'].$data['wrongChar'].$data['rightHand'];
+            $doc['originalSequense']   = $data['leftHand'].$data['originalChar'].$data['rightHand'];;
+            $doc['leftHandChar']       = $data['leftHand'].$data['wrongChar'];
+
+            try {
+               $collection->insert( $doc );
+               return true;
+            } catch(MongoCursorException $e) {
+               $error[$i] = "Error agregando el indice: ".$i;
+               return false;
+            }
+         return false;
+      }
+      
 
       /*
       *     Select all from the used Mongo Collection and add it to array.
