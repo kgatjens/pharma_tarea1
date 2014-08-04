@@ -81,7 +81,7 @@ class Pharmacogenomic{
    	}
 
    	function readCsv($fileName){
-   		set_time_limit(1000000); 
+   		set_time_limit(10000000000); 
 
    		$linesArray = file($fileName);
 
