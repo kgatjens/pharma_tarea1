@@ -75,7 +75,8 @@ class Pharmacogenomic{
        		$this->stringToAnalyce = $_POST['sequence'];
             $this->selectFromCollection($this->stringToAnalyce);
        }
-       	//$this->readCsv(SERVER_PATH."/".FILE_NAME);
+       	echo SERVER_PATH."/".FILE_NAME;exit;
+         $this->readCsv(SERVER_PATH."/".FILE_NAME);
          //$this->selectAll();// Test Function
    	}
 
