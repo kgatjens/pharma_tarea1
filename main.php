@@ -23,6 +23,8 @@ ini_set('display_errors','On');
 define("SERVER_PATH",$_SERVER['HTTP_REFERER']); // Temporal
 define("FILE_NAME","cleanCsv.csv"); // Temporal
 
+define("FILE_PATH","/export/apps/serviciosBioinformaticos/farmacogenomica/cleanCsv.csv");
+
 class Pharmacogenomic{
 
 	public $stringToAnalyce;
@@ -74,44 +76,19 @@ class Pharmacogenomic{
 
 		 if(isset($_POST['sequence'])){
        		$this->stringToAnalyce = $_POST['sequence'];
-           // $this->selectFromCollection($this->stringToAnalyce);
+            $this->selectFromCollection($this->stringToAnalyce);
        }
        	//echo SERVER_PATH."/".FILE_NAME;exit;
-       $path = str_replace('index.php','',SERVER_PATH);
-       $file = $path.FILE_NAME;
-
-         $this->readCsv($file);
+     
+         //$this->readCsv();
          //$this->selectAll();// Test Function
    	}
 
-   	function readCsv($fileName){
+   	function readCsv(){
    		set_time_limit(10000000000); 
-           //  ini_set('display_errors', 'On');
+         ini_set('display_errors', 'On');
 
-$ch = curl_init();
-
-curl_setopt($ch, CURLOPT_HEADER, 0);
-
-curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
-curl_setopt($ch, CURLOPT_URL, $fileName);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-$result = curl_exec($ch);
-if ( $result==false ) {
-  echo curl_errno($ch).' '.curl_error($ch);
-}
-curl_close($ch);
-
-var_dump($result);
-echo "xxxx";
-
-
-$fileName = '/export/apps/serviciosBioinformaticos/farmacogenomica/cleanCsv.csv';
-
-
-
-
-   		$linesArray = file($fileName);
+   		$linesArray = file($FILE_PATH);
 
    		$this->createSequence($linesArray);
    	}
