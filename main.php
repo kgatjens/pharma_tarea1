@@ -18,8 +18,7 @@ require_once('lib/mongo.php');
 error_reporting(-1);
 ini_set('display_errors','On');
 
-echo "<pre>";
-print_r($_SERVER);
+
 
 define("SERVER_PATH",$_SERVER['HTTP_REFERER']); // Temporal
 define("FILE_NAME","cleanCsv.csv"); // Temporal
@@ -78,7 +77,10 @@ class Pharmacogenomic{
            // $this->selectFromCollection($this->stringToAnalyce);
        }
        	//echo SERVER_PATH."/".FILE_NAME;exit;
-         $this->readCsv(SERVER_PATH.'/'.FILE_NAME);
+       $path = str_replace('index.php','',SERVER_PATH);
+       echo $file = $path.FILE_NAME;exit;
+
+         $this->readCsv($file);
          //$this->selectAll();// Test Function
    	}
 
