@@ -78,7 +78,7 @@ class Pharmacogenomic{
        }
        	//echo SERVER_PATH."/".FILE_NAME;exit;
        $path = str_replace('index.php','',SERVER_PATH);
-       echo $file = $path.FILE_NAME;exit;
+       $file = $path.FILE_NAME;
 
          $this->readCsv($file);
          //$this->selectAll();// Test Function
