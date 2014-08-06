@@ -13,11 +13,13 @@
 *
 *
 */
-
 //require_once('lib/db.php');
 require_once('lib/mongo.php');
 error_reporting(-1);
 ini_set('display_errors','On');
+
+echo "<pre>";
+print_r($_SERVER);
 
 define("SERVER_PATH",$_SERVER['HTTP_REFERER']); // Temporal
 define("FILE_NAME","cleanCsv.csv"); // Temporal
@@ -32,9 +34,9 @@ class Pharmacogenomic{
 
 	function __construct($action = "") {
 		session_start();
-      $this->data = array();
 
-      if(isset($action)){
+      $this->data = array();
+   if(isset($action)){
          switch ($action) {
            case "upload":
               $this->uploadFile();
@@ -73,17 +75,17 @@ class Pharmacogenomic{
 
 		 if(isset($_POST['sequence'])){
        		$this->stringToAnalyce = $_POST['sequence'];
-            $this->selectFromCollection($this->stringToAnalyce);
+           // $this->selectFromCollection($this->stringToAnalyce);
        }
        	//echo SERVER_PATH."/".FILE_NAME;exit;
-         $this->readCsv(SERVER_PATH.FILE_NAME);
+         $this->readCsv(SERVER_PATH.'/'.FILE_NAME);
          //$this->selectAll();// Test Function
    	}
 
    	function readCsv($fileName){
-   		set_time_limit(10000000000); 
-             ini_set('display_errors', 'On');
-
+   		//set_time_limit(10000000000); 
+           //  ini_set('display_errors', 'On');
+/*
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -101,9 +103,19 @@ curl_close($ch);
 var_dump($result);
 echo "xxxx";
 
+*/
+echo $fileName;
+
+$curl_handle=curl_init();
+curl_setopt($curl_handle, CURLOPT_URL,$fileName);
+curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
+curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl_handle, CURLOPT_USERAGENT, 'farma');
+$query = curl_exec($curl_handle);
+curl_close($curl_handle);
 
 
-   		$linesArray = file($fileName);
+   		$linesArray = file_get_contents($fileName);
 
    		$this->createSequence($linesArray);
    	}
@@ -289,6 +301,8 @@ echo "xxxx";
             $doc['originalSequense']   = $value['leftHand'].$value['originalChar'].$value['rightHand'];;
             $doc['leftHandChar']       = $value['leftHand'].$value['wrongChar'];
 
+            
+            print_r($doc);
             try {
                $collection->insert( $doc );
             } catch(MongoCursorException $e) {
