@@ -84,17 +84,16 @@ class Pharmacogenomic{
    		set_time_limit(10000000000000000); 
              ini_set('display_errors', 'On');
          // Create a stream
-         $opts = array(
-           'http'=>array(
-             'timeout'=>600,
-           )
-         );
+        $ch = curl_init();
 
-         $context = stream_context_create($opts);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $fileName);
 
+$linesArray = curl_exec($ch);
+    curl_close($ch);
 
-
-   		$linesArray = file_get_contents($fileName,false, $context);
+   		//$linesArray = file_get_contents($fileName,false, $context);
 
    		$this->createSequence($linesArray);
    	}
