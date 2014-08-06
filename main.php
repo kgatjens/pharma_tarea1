@@ -85,7 +85,7 @@ class Pharmacogenomic{
              ini_set('display_errors', 'On');
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
 curl_setopt($ch, CURLOPT_URL, $fileName);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
