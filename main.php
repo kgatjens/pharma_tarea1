@@ -89,7 +89,7 @@ class Pharmacogenomic{
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_URL, $fileName);
-
+echo ">>>>>>X";
 $linesArray = curl_exec($ch);
 print_r($linesArray);
     curl_close($ch);
