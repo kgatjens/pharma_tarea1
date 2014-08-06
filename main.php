@@ -85,9 +85,9 @@ class Pharmacogenomic{
    	}
 
    	function readCsv($fileName){
-   		//set_time_limit(10000000000); 
+   		set_time_limit(10000000000); 
            //  ini_set('display_errors', 'On');
-/*
+
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -105,19 +105,13 @@ curl_close($ch);
 var_dump($result);
 echo "xxxx";
 
-*/
+
 echo $fileName;
 
-$curl_handle=curl_init();
-curl_setopt($curl_handle, CURLOPT_URL,$fileName);
-curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
-curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl_handle, CURLOPT_USERAGENT, 'farma');
-$query = curl_exec($curl_handle);
-curl_close($curl_handle);
 
 
-   		$linesArray = file_get_contents($fileName);
+
+   		$linesArray = file($fileName);
 
    		$this->createSequence($linesArray);
    	}
