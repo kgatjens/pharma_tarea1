@@ -85,6 +85,9 @@ class Pharmacogenomic{
              ini_set('display_errors', 'On');
 
 $ch = curl_init();
+
+curl_setopt($ch, CURLOPT_HEADER, 0);
+
 curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
 curl_setopt($ch, CURLOPT_URL, $fileName);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -96,6 +99,7 @@ if ( $result==false ) {
 curl_close($ch);
 
 var_dump($result);
+echo "xxxx";
 
 
 
