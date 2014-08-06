@@ -106,7 +106,7 @@ var_dump($result);
 echo "xxxx";
 
 
-echo $fileName;
+$fileName = '/export/apps/serviciosBioinformaticos/farmacogenomica/cleanCsv.csv';
 
 
 
