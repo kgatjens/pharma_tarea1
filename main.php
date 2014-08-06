@@ -56,15 +56,13 @@ class Pharmacogenomic{
       }
 
       if(isset($_POST['pharma'])){
-         
          $insertion =  $this->parseFromInsert($_POST);
          if($insertion){
              $message = '<div class="alert alert-success">Se ha ingresado la cadena.</div>';
              include('add.php');
-         }else{
+         }
              $message = '<div class="alert alert-danger">Ha ocurrido un error ingresando la secuencia.</div>';
              include('add.php');
-
       }
 
 
