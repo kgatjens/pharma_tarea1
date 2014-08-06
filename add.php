@@ -18,7 +18,7 @@ echo @$message;
     <input name="snp" type="text" class="form-control" id="snp" placeholder="...">
     <p class="help-block">Ingrese el Polimorfismo de Nucle&oacute;tido Simple</p>
 
-    <label for="sequense">Secuencia</label>
+    <label for="sequense">Secuencia (Ingrese los '[' ']' para identificar el caracter)</label>
     <input name="sequense" type="text" class="form-control" id="sequense" placeholder="...">
     <p class="help-block">Ingrese la secuencia </p>
 
