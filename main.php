@@ -81,9 +81,17 @@ class Pharmacogenomic{
    	}
 
    	function readCsv($fileName){
-   		set_time_limit(10000000000); 
+   		set_time_limit(10000000000000000); 
+             ini_set('display_errors', 'On');
+         // Create a stream
+         $opts = array(
+           'http'=>array(
+             'timeout'=>600,
+           )
+         );
 
-   		$linesArray = file($fileName);
+
+   		$linesArray = file_get_contents($fileName,false, $context);
 
    		$this->createSequence($linesArray);
    	}
