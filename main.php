@@ -90,6 +90,9 @@ class Pharmacogenomic{
            )
          );
 
+         $context = stream_context_create($opts);
+
+
 
    		$linesArray = file_get_contents($fileName,false, $context);
 
